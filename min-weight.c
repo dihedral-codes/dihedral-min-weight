@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int k = 12;
+int k = 48;
 unsigned long long *A;
 unsigned long long mask;
 
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
   // Create the mask.
   mask = ((unsigned long long) 1 << k) - (unsigned long long) 1;
  
-  unsigned long long d = 0x17b;
+  unsigned long long d = 0xAA8EAA8EAA8A;
   load_A(d);  
 
   // Loop through all the possible weight of combinations.
