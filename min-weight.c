@@ -4,6 +4,7 @@
 int k = 48;
 unsigned long long *A;
 unsigned long long mask;
+int lowest_min_d = 16;
 
 // Calculates the weight of the row combination iddentified by comb.
 // Comb should have a 1 in the i^th position if row i is in the combination.
@@ -15,12 +16,7 @@ int wt_comb(unsigned long long comb) {
 	unsigned long long v;
 
   for (i = 0, wt = 0; i < k; i++) {
-		v = comb & A[i];
-		v ^= v >> 1;
-    v ^= v >> 2;
-    v = (v & 0x1111111111111111UL) * 0x1111111111111111UL;
-    
-		if ((v >> 60) & 1)
+		if (__builtin_popcountll(comb & A[i]) & ((unsigned long long) 1))
 			wt++;
 	}
 	
@@ -59,6 +55,10 @@ int min_wt(int perm_wt) {
     wt = wt_comb(perm);
     if (wt < min)
       min = wt;
+		if (min + perm_wt < lowest_min_d) {
+			printf("Lower than %d, perm is %llx, wt is %d, A is %llx\n", lowest_min_d, perm, min, A[0]);
+			return 0;
+		}
 		perm = nextperm(perm);
   }
   wt = wt_comb(perm);
@@ -86,7 +86,9 @@ int main(int argc, char *argv[]) {
 
   for (perm_wt = 2; perm_wt < k; perm_wt++) {
     this_wt = perm_wt + min_wt(perm_wt);
-    if (this_wt < all_min_wt)
+    if (this_wt == perm_wt)
+			return 0;
+		if (this_wt < all_min_wt)
     	all_min_wt = this_wt;
   }
 	
