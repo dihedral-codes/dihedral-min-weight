@@ -56,7 +56,7 @@ int min_wt(int perm_wt) {
     if (wt < min)
       min = wt;
 		if (min + perm_wt < lowest_min_d) {
-			printf("Lower than %d, perm is %llx, wt is %d, A is %llx\n", lowest_min_d, perm, min, A[0]);
+			printf("%llx %d %llx\n", perm, min, A[0]);
 			return 0;
 		}
 		perm = nextperm(perm);
@@ -70,13 +70,15 @@ int min_wt(int perm_wt) {
 
 
 int main(int argc, char *argv[]) {
-  
+ 
+  char *endptr;
+  unsigned long long d = strtoull(argv[1], &endptr, 2);
+
   A = malloc(sizeof(unsigned long long) * k);
 
   // Create the mask.
   mask = ((unsigned long long) 1 << k) - (unsigned long long) 1;
  
-  unsigned long long d = 0xAA8EAA8EAA8A;
   load_A(d);  
 
   // Loop through all the possible weight of combinations.
